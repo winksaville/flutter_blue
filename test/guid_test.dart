@@ -23,6 +23,13 @@ main() {
           guid.toByteArray().toString());
     });
 
+    test('constEmpty()', () {
+      const guid = Guid.constEmpty();
+      expect("[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]",
+          guid.toByteArray().toString());
+      expect(guid.hashCode, 0);
+    });
+
     test('toByteArray()', () {
       var guid = new Guid("{00002a43-0000-1000-8000-00805f9b34fb}");
       expect("[0, 0, 42, 67, 0, 0, 16, 0, 128, 0, 0, 128, 95, 155, 52, 251]",

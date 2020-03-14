@@ -18,6 +18,8 @@ class Guid {
 
   Guid.empty() : this._internal(new List.filled(16, 0));
 
+  const Guid.constEmpty() : this._bytes = const [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], this._hashCode = 0;
+
   static List<int> _fromMacString(input) {
     var bytes = new List<int>.filled(16, 0);
 
