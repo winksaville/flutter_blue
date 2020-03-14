@@ -27,7 +27,35 @@ class BluetoothCharacteristic {
         _onValueChangedStream,
       ]);
 
+  // Attempt at a get value" that handles _value being null:
+  //Stream<List<int>> get value {
+  //  if (_value == null) {
+  //    return Stream<List<int>>.empty();
+  //  } else {
+  //    return Rx.merge([
+  //      _value.stream,
+  //      _onValueChangedStream,
+  //    ]);
+  //  }
+  //}
+
   List<int> get lastValue => _value.value;
+
+  // A constructor which doesn't require a protobuf.
+  BluetoothCharacteristic(
+      Guid uuid, DeviceIdentifier deviceIdentifier, Guid serviceUuid,
+      {Guid secondaryServiceUuid = const Guid.constEmpty(),
+      CharacteristicProperties properties =
+          const CharacteristicProperties.constEmpty(),
+      List<BluetoothDescriptor> descriptors = const [],
+      BehaviorSubject<List<int>> behaviors})
+      : uuid = uuid,
+        deviceId = deviceIdentifier,
+        serviceUuid = serviceUuid,
+        secondaryServiceUuid = secondaryServiceUuid,
+        descriptors = descriptors,
+        properties = properties,
+        _value = behaviors;
 
   BluetoothCharacteristic.fromProto(protos.BluetoothCharacteristic p)
       : uuid = new Guid(p.uuid),
@@ -200,6 +228,18 @@ class CharacteristicProperties {
       this.extendedProperties = false,
       this.notifyEncryptionRequired = false,
       this.indicateEncryptionRequired = false});
+
+  const CharacteristicProperties.constEmpty()
+      : this.broadcast = false,
+        this.read = false,
+        this.writeWithoutResponse = false,
+        this.write = false,
+        this.notify = false,
+        this.indicate = false,
+        this.authenticatedSignedWrites = false,
+        this.extendedProperties = false,
+        this.notifyEncryptionRequired = false,
+        this.indicateEncryptionRequired = false;
 
   CharacteristicProperties.fromProto(protos.CharacteristicProperties p)
       : broadcast = p.broadcast,
