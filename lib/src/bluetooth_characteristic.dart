@@ -57,6 +57,24 @@ class BluetoothCharacteristic {
         properties = properties,
         _value = behaviors;
 
+  @override
+  bool operator ==(other) {
+    return (uuid == other.uuid) &&
+        (deviceId == other.deviceId) &&
+        (secondaryServiceUuid == other.secondaryServiceUuid) &&
+        (properties == other.properties) &&
+        (descriptors == other.descriptors);
+  }
+
+  /// TODO.hashValues: when https://dart-review.googlesource.com/c/sdk/+/73360 lands
+  /// and or https://github.com/dart-lang/sdk/issues/11617 is resolved use
+  /// that as a solution.
+  @override
+  int get hashCode =>
+      hashValues(
+          uuid.hashCode, deviceId.hashCode, secondaryServiceUuid.hashCode,
+          properties.hashCode, descriptors.hashCode);
+
   BluetoothCharacteristic.fromProto(protos.BluetoothCharacteristic p)
       : uuid = new Guid(p.uuid),
         deviceId = new DeviceIdentifier(p.remoteId),
@@ -200,6 +218,7 @@ class BluetoothCharacteristic {
       return (c.isNotifying == notify);
     });
   }
+
 }
 
 enum CharacteristicWriteType { withResponse, withoutResponse }
